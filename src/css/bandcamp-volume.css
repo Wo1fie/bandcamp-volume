@@ -1,0 +1,39 @@
+#bandcamp-volume-container{
+    display: flex;
+}
+#volumeLabel{
+    width:25%;
+}
+#volumeText{
+    width:100%;
+}
+#volumeRange{
+    width: 75%;
+}
+
+#volumeRange{
+    -webkit-appearance: none;
+}
+#volumeRange{
+    background: rgba(245,245,245,0.1);
+    height: 8px;
+    border: 1px solid #bebebe;
+}
+#volumeRange::-webkit-slider-runnable-track {
+    background: rgba(245,245,245,0.1);
+    border: none;
+    border-radius: 2px;
+}
+
+#volumeRange::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 1px solid #bebebe;
+    height: 12px;
+    width: 24px;
+    background: #fff;
+    margin-top: -1px;
+}
+
+#volumeRange:focus {
+    outline: none;
+}
