@@ -44,7 +44,7 @@ function BandcampVolume() {
             var savedVolume = Cookie.get('volume');
             if (savedVolume) {
                 this.log("Detected Volume cookie.  Setting volume to ", savedVolume);
-                this.setVolume(savedVolume, true);
+                this.setVolume(parseFloat(savedVolume), true);
             } else {
                 this.log("Volume cookie is unset.  It is probably not ready and will be refreshed when the player starts.");
             }
@@ -78,15 +78,6 @@ function BandcampVolume() {
         }
     };
     this.onplay = function (e) {
-        debugger;
-        if (!this.hasSetVolume) {
-            let savedVolume = Cookie.get('volume');
-            if (savedVolume) {
-                this.setVolume(savedVolume, true);
-            } else {
-                this.log("Volume still unset or invalid.  Value: ", savedVolume);
-            }
-        }
     }
     this.setPlayer = function (player) {
         this.activeplayer = player;
@@ -96,11 +87,12 @@ function BandcampVolume() {
     this.setVolume = function (volume, updateElement) {
         this.activeplayer.volume = volume;
         if (updateElement) {
-            this.widgetRange.setAttribute('value', volume * 100);
+            this.widgetRange.setAttribute('value', volume * 100); //because 0.07 * 100 = 7.000000000000001
         }
         if (this.cookiejs) {
             Cookie.set('volume', volume);
         }
+        this.hasSetVolume = true;
     };
 
     this.getVolume = function () {
