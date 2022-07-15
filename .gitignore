@@ -1,3 +1,9 @@
+dist
+debug-dist
+release
+*.pdn
+*.zip
+
 # Logs
 logs
 *.log
