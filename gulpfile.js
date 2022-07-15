@@ -5,6 +5,7 @@ var del = require('del');
 var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 var merge = require('gulp-merge');
+var zip = require('gulp-zip');
 
 // Gulp task to minify CSS files
 gulp.task('styles', function () {
@@ -43,6 +44,12 @@ gulp.task('minifydebug', async () => {
         .pipe(gulp.dest('./debug-dist/css'))
 
     return await merge(manifest, scripts, styles);
+})
+
+gulp.task('release', function(){
+    return gulp.src('./dist/*')
+    .pipe(zip('release.zip'))
+    .pipe(gulp.dest('./release'))
 })
 
 // Gulp task to minify all files
