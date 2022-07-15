@@ -1,0 +1,32 @@
+{
+    "name": "Bandcamp Volume",
+    "action": {},
+    "manifest_version": 3,
+    "version": "0.1.2",
+    "description": "Allows for adjusting music volume on bandcamp.com",
+    "permissions": [],
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "all_frames": true,
+            "js": [
+                "js/bandcamp-volume-loader.js"
+            ],
+            "css": [
+                "css/bandcamp-volume.css"
+            ]
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "resources": [
+                "js/bandcamp-volume.js"
+            ]
+        }
+    ]
+}
