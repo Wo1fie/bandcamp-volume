@@ -1,5 +1,6 @@
 dist
 debug-dist
+release
 *.pdn
 *.zip
 
