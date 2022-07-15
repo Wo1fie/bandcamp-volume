@@ -3,6 +3,7 @@ function BandcampVolume() {
     this.currentWidget = null;
     this.cookiejs = typeof Cookie != 'undefined';
     this.hasSetVolume = false;
+    this.widgetRange = null;
 
     this.generateWidget = function () {
         // Create Elements
@@ -24,13 +25,14 @@ function BandcampVolume() {
 
         const currentVolume = this.getVolume() * 100;
         elText.innerText = currentVolume + "%";
-        elRange.setAttribute('value', currentVolume)
+        elRange.setAttribute('value', currentVolume);
         elRange.oninput = function onVolumeChange(e) {
             const val = e.target.valueAsNumber;
             let newVolume = val / 100;
             this.setVolume(newVolume);
             elText.innerText = val + "%";
         }.bind(this);
+        this.widgetRange = elRange;
         return newElContainer;
     };
 
@@ -38,12 +40,12 @@ function BandcampVolume() {
         var widget = this.generateWidget();
         this.currentWidget = widget;
         target.prepend(widget);
-        if(this.cookiejs){
+        if (this.cookiejs) {
             var savedVolume = Cookie.get('volume');
-            if(savedVolume){
+            if (savedVolume) {
                 this.log("Detected Volume cookie.  Setting volume to ", savedVolume);
-                this.setVolume(savedVolume);
-            }else{
+                this.setVolume(savedVolume, true);
+            } else {
                 this.log("Volume cookie is unset.  It is probably not ready and will be refreshed when the player starts.");
             }
         }
@@ -75,18 +77,28 @@ function BandcampVolume() {
             return miniAudio;
         }
     };
-    this.onplay = function(a,b,c,d,e,f){
+    this.onplay = function (e) {
         debugger;
-        console.log("onPlay ", this, a,b,c,d,e,f);
+        if (!this.hasSetVolume) {
+            let savedVolume = Cookie.get('volume');
+            if (savedVolume) {
+                this.setVolume(savedVolume, true);
+            } else {
+                this.log("Volume still unset or invalid.  Value: ", savedVolume);
+            }
+        }
     }
-    this.setPlayer = function(player){
+    this.setPlayer = function (player) {
         this.activeplayer = player;
-        player.onplay = this.onplay;
+        player.onplay = this.onplay.bind(this);
     }
 
-    this.setVolume = function (volume) {
+    this.setVolume = function (volume, updateElement) {
         this.activeplayer.volume = volume;
-        if(this.cookiejs){
+        if (updateElement) {
+            this.widgetRange.setAttribute('value', volume * 100);
+        }
+        if (this.cookiejs) {
             Cookie.set('volume', volume);
         }
     };
@@ -99,7 +111,7 @@ function BandcampVolume() {
         const elTrackInfoContainer = document.getElementById("trackInfoInner"); // Get track info container if we're on the main bandcamp site
         var elPlayer = document.getElementById('player'); //mini player widget potentially
 
-        if(this.cookiejs){ //Cookie plugin detection
+        if (this.cookiejs) { //Cookie plugin detection
             this.log("CookieJS detected.  This will attempt to integrate with Bandcamp's Volume cookie.");
         }
         if (elTrackInfoContainer) { //Bandcamp site
