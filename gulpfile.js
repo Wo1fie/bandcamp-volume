@@ -47,7 +47,7 @@ gulp.task('minifydebug', async () => {
 })
 
 gulp.task('release', function(){
-    return gulp.src('./dist/*')
+    return gulp.src('./dist/**/*')
     .pipe(zip('release.zip'))
     .pipe(gulp.dest('./release'))
 })
