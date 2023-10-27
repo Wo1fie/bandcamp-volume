@@ -3,7 +3,7 @@
     "action": {},
     "manifest_version": 3,
     "version": "0.2.0",
-    "description": "Allows for adjusting music volume on bandcamp.com and bandcamp miniplayer embed",
+    "description": "Allows for adjusting music volume on bandcamp.com and bandcamp miniplayer embeds on websites or Twitter/X feeds.",
     "permissions": [],
     "content_scripts": [
         {
